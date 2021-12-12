@@ -18,7 +18,7 @@ try {
     "\n",
     "[args]",
     "\n",
-    args
+    args,
   );
 } catch (e) {
   console.error("[ERROR]", e);
