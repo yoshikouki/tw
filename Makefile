@@ -8,7 +8,7 @@ deno:
 
 command:
 	@deno install --name tw \
-	--force --allow-net --allowe-read \
+	--force --allow-net --allow-read \
 	index.ts
 
 path:
