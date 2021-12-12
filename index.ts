@@ -24,6 +24,10 @@ try {
 
   const conf = config();
   console.log(conf.test);
+
+  const jsonResponse = await fetch("https://api.github.com/users/denoland");
+  const jsonData = await jsonResponse.json();
+  console.log(jsonData);
 } catch (e) {
   console.error("[ERROR]", e);
   Deno.exit(1);
