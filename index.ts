@@ -1,17 +1,26 @@
-import {Command} from "https://deno.land/x/cliffy@v0.19.3/command/mod.ts";
+import { Command } from "https://deno.land/x/cliffy@v0.20.1/command/mod.ts";
 
 const cmd = new Command()
-    .name("tw")
-    .description("tweet quickly")
-    .option("-l, --timeline", "Show Timeline")
-    .arguments("<text>")
+  .name("tw")
+  .description("tweet quickly")
+  .option("-l, --timeline", "Show Timeline")
+  .arguments("<text>");
 
 try {
-    const { options, args } = await cmd.parse(Deno.args)
+  const { options, args } = await cmd.parse(Deno.args);
 
-    console.log(options)
-    console.log(args)
+  console.log(
+    "\n",
+    "[options]",
+    "\n",
+    options,
+    "\n",
+    "\n",
+    "[args]",
+    "\n",
+    args
+  );
 } catch (e) {
-    console.error("[ERROR]", e)
-    Deno.exit(1)
+  console.error("[ERROR]", e);
+  Deno.exit(1);
 }
