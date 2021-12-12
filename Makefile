@@ -1,10 +1,15 @@
 install:
 	@$(MAKE) deno
-	@deno install --force --name tw index.ts
+	@$(MAKE) command
 	@$(MAKE) path
 
 deno:
 	@which deno > /dev/null || echo "please install deno. https://deno.land/" | exit 1
+
+command:
+	@deno install --name tw \
+	--force --allowe-read \
+	index.ts
 
 path:
 	@echo "\nensure to set deno to PATH."
