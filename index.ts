@@ -6,7 +6,7 @@ const cmd = new Command()
   .name("tw")
   .description("tweet quickly")
   .option("-l, --timeline", "Show Timeline")
-  .arguments("[text]");
+  .arguments("[...text]");
 
 try {
   const { options, args } = await cmd.parse(Deno.args);
@@ -33,7 +33,7 @@ try {
     accessTokenSecret: conf.accessTokenSecret,
   });
   const res = await api.post("statuses/update.json", {
-    status: "deno でつぶやいてみるぞーーー",
+    status: args[0].join(" "),
   });
   console.log(await res.json());
 } catch (e) {
