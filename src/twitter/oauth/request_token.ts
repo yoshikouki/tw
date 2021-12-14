@@ -14,7 +14,6 @@ export const fetchRequestToken = async (): Promise<string> => {
     method,
     headers,
   });
-  console.log(requestTokenReq.headers);
   const response = await fetch(requestTokenReq);
   return await response.json();
 };
