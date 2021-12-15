@@ -5,16 +5,12 @@ const requestTokenUrl = "https://api.twitter.com/oauth/request_token";
 
 export const fetchRequestToken = async (): Promise<string> => {
   const method = "POST";
-  const options = {
-    "oauth_callback": "oob",
-  };
-  const url = requestTokenUrl + "?" + toQueryParams(options);
-  const headers = createOAuthHeaders(method, url, options);
+  const options = { "oauth_callback": "oob" };
+  const headers = createOAuthHeaders(method, requestTokenUrl, options);
 
-  const requestTokenReq = new Request(url, {
+  const response = await fetch(requestTokenUrl + "?" + toQueryParams(options), {
     method,
     headers,
   });
-  const response = await fetch(requestTokenReq);
   return await response.text();
 };

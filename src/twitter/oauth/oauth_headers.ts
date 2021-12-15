@@ -66,9 +66,9 @@ class OAuthHeader {
 
     const encodedParamPairs = toQueryParams(allParams, true);
 
-    const signatureBaseString = `${this.method}&${
-      percentEncode("https://api.twitter.com/oauth/request_token")
-    }&${percentEncode(encodedParamPairs)}`;
+    const signatureBaseString = `${this.method}&${percentEncode(this.url)}&${
+      percentEncode(encodedParamPairs)
+    }`;
 
     const signingKey = `${percentEncode(this.conf.consumerApiSecret)}&`;
 
