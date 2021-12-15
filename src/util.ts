@@ -32,18 +32,3 @@ export const percentEncode = (val: string): string => {
 
   return percentEncodedVal;
 };
-
-type Object = { [key: string]: string };
-
-export const toQueryParams = (
-  object: Object,
-  sort = false,
-): string => {
-  const strings = Object.entries(object).map(([key, val]) => {
-    const encodedKey = percentEncode(key);
-    const encodedVal = percentEncode(val);
-    return `${encodedKey}=${encodedVal}`;
-  });
-  if (sort) strings.sort();
-  return strings.join("&");
-};

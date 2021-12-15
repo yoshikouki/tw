@@ -1,7 +1,8 @@
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 import { v4 } from "https://deno.land/std@0.51.0/uuid/mod.ts";
 import { hmac } from "https://deno.land/x/hmac@v2.0.1/mod.ts";
-import { percentEncode, toQueryParams } from "../../util.ts";
+import { percentEncode } from "../../util.ts";
+import * as queryString from "https://deno.land/x/querystring@v1.0.2/mod.js";
 
 type MethodType = "GET" | "POST";
 
@@ -64,7 +65,7 @@ class OAuthHeader {
       "oauth_version": this.oauthVersion,
     };
 
-    const encodedParamPairs = toQueryParams(allParams, true);
+    const encodedParamPairs = queryString.stringify(allParams);
 
     const signatureBaseString = `${this.method}&${percentEncode(this.url)}&${
       percentEncode(encodedParamPairs)
