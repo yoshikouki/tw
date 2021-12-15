@@ -1,3 +1,3 @@
-import { fetchRequestToken } from "./twitter/oauth/request_token.ts";
+import { getAuthenticateUrl } from "./twitter/oauth/request_token.ts";
 
-console.log(await fetchRequestToken());
+console.log(await getAuthenticateUrl());

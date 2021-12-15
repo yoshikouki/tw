@@ -17,3 +17,10 @@ export const fetchRequestToken = async (): Promise<string> => {
   const requestToken = queryString.parse(await response.text()).oauth_token;
   return typeof requestToken === "string" ? requestToken : "";
 };
+
+export const getAuthenticateUrl = async (): Promise<string> => {
+  return queryString.stringifyUrl({
+    url: "https://api.twitter.com/oauth/authenticate",
+    query: { "oauth_token": await fetchRequestToken() },
+  });
+};
