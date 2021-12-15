@@ -1,6 +1,7 @@
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 import { v4 } from "https://deno.land/std@0.51.0/uuid/mod.ts";
 import { hmac } from "https://deno.land/x/hmac@v2.0.1/mod.ts";
+import { percentEncode, toQueryParams } from "../../util.ts";
 
 type MethodType = "GET" | "POST";
 
@@ -63,18 +64,13 @@ class OAuthHeader {
       "oauth_version": this.oauthVersion,
     };
 
-    const encodedParamPairs = Object.entries(allParams).map(([key, val]) => {
-      const encodedKey = this.percentEncode(key);
-      const encodedVal = this.percentEncode(val);
-      return `${encodedKey}=${encodedVal}`;
-    });
-    const sortedParamPairs = encodedParamPairs.sort().join("&");
+    const encodedParamPairs = toQueryParams(allParams, true);
 
     const signatureBaseString = `${this.method}&${
-      this.percentEncode("https://api.twitter.com/oauth/request_token")
-    }&${this.percentEncode(sortedParamPairs)}`;
+      percentEncode("https://api.twitter.com/oauth/request_token")
+    }&${percentEncode(encodedParamPairs)}`;
 
-    const signingKey = `${this.percentEncode(this.conf.consumerApiSecret)}&`;
+    const signingKey = `${percentEncode(this.conf.consumerApiSecret)}&`;
 
     const signature = hmac(
       "sha1",
@@ -84,42 +80,7 @@ class OAuthHeader {
       "base64",
     ).toString();
 
-    return this.percentEncode(signature);
-  }
-
-  private percentEncode(val: string) {
-    const encodedVal: string = encodeURIComponent(val);
-
-    // Adjust for RFC 3986 section 2.2 Reserved Characters
-    const reservedChars: { match: RegExp; replace: string }[] = [
-      { match: /\!/g, replace: "%21" },
-      { match: /\#/g, replace: "%23" },
-      { match: /\$/g, replace: "%24" },
-      { match: /\&/g, replace: "%26" },
-      { match: /\'/g, replace: "%27" },
-      { match: /\(/g, replace: "%28" },
-      { match: /\)/g, replace: "%29" },
-      { match: /\*/g, replace: "%2A" },
-      { match: /\+/g, replace: "%2B" },
-      { match: /\,/g, replace: "%2C" },
-      { match: /\//g, replace: "%2F" },
-      { match: /\:/g, replace: "%3A" },
-      { match: /\;/g, replace: "%3B" },
-      { match: /\=/g, replace: "%3D" },
-      { match: /\?/g, replace: "%3F" },
-      { match: /\@/g, replace: "%40" },
-      { match: /\[/g, replace: "%5B" },
-      { match: /\]/g, replace: "%5D" },
-    ];
-
-    const percentEncodedVal = reservedChars.reduce(
-      (tot, { match, replace }) => {
-        return tot.replace(match, replace);
-      },
-      encodedVal,
-    );
-
-    return percentEncodedVal;
+    return percentEncode(signature);
   }
 }
 
