@@ -1,6 +1,7 @@
 import { createOAuthHeaders } from "./oauth_headers.ts";
 
-const requestTokenUrl = "https://api.twitter.com/oauth/request_token";
+const requestTokenUrl =
+  "https://api.twitter.com/oauth/request_token?oauth_callback=oob";
 
 export const fetchRequestToken = async (): Promise<string> => {
   const url = requestTokenUrl;
@@ -15,5 +16,5 @@ export const fetchRequestToken = async (): Promise<string> => {
     headers,
   });
   const response = await fetch(requestTokenReq);
-  return await response.json();
+  return await response.text();
 };

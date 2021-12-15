@@ -29,7 +29,6 @@ class OAuthHeader {
     const oauthSignature = this.createSignature();
     const authorizationHeader = [
       "OAuth",
-      'oauth_callback="oob",',
       `oauth_consumer_key="${this.conf.consumerApiKey}",`,
       `oauth_nonce="${this.oauthNonce}",`,
       `oauth_signature="${oauthSignature}",`,
@@ -72,7 +71,7 @@ class OAuthHeader {
     const sortedParamPairs = encodedParamPairs.sort().join("&");
 
     const signatureBaseString = `${this.method}&${
-      this.percentEncode(this.url)
+      this.percentEncode("https://api.twitter.com/oauth/request_token")
     }&${this.percentEncode(sortedParamPairs)}`;
 
     const signingKey = `${this.percentEncode(this.conf.consumerApiSecret)}&`;
@@ -85,7 +84,7 @@ class OAuthHeader {
       "base64",
     ).toString();
 
-    return signature;
+    return this.percentEncode(signature);
   }
 
   private percentEncode(val: string) {
