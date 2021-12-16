@@ -24,3 +24,32 @@ export const getAuthenticateUrl = async (): Promise<string> => {
     query: { "oauth_token": await fetchRequestToken() },
   });
 };
+
+export const obtainAccessToken = async (
+  pin: string,
+  requestToken: string,
+): Promise<void> => {
+  const method = "POST";
+  const accessTokenUrl = "https://api.twitter.com/oauth/access_token";
+  const options = {
+    "oauth_verifier": pin,
+    "oauth_token": requestToken,
+  };
+  const headers = createOAuthHeaders(method, accessTokenUrl, options);
+  console.log(headers);
+  const response = await fetch(
+    queryString.stringifyUrl({ url: accessTokenUrl, query: options }),
+    {
+      method,
+      headers,
+    },
+  );
+  console.log(response);
+  if (!response.ok) {
+    console.error("[ERROR] failed to obtain access token.");
+    Deno.exit(1);
+  }
+  const responseText = await response.text();
+  const accessTokenObject = queryString.parse(responseText);
+  console.log(accessTokenObject);
+};
