@@ -1,6 +1,5 @@
 import { Command } from "https://deno.land/x/cliffy@v0.20.1/command/mod.ts";
-import { config } from "https://deno.land/x/dotenv/mod.ts";
-import { TwitterApi } from "https://raw.githubusercontent.com/stefanuros/deno_twitter_api/master/mod.ts";
+import { setup } from "./src/twitter.ts";
 
 const cmd = new Command()
   .name("tw")
@@ -10,32 +9,9 @@ const cmd = new Command()
 
 try {
   const { options, args } = await cmd.parse(Deno.args);
+  console.log(options, args);
 
-  console.log(
-    "\n",
-    "[options]",
-    "\n",
-    options,
-    "\n",
-    "\n",
-    "[args]",
-    "\n",
-    args,
-  );
-
-  const conf = config();
-  console.log(conf.test);
-
-  const api = new TwitterApi({
-    consumerApiKey: conf.consumerApiKey,
-    consumerApiSecret: conf.consumerApiSecret,
-    accessToken: conf.accessToken,
-    accessTokenSecret: conf.accessTokenSecret,
-  });
-  const res = await api.post("statuses/update.json", {
-    status: args[0].join(" "),
-  });
-  console.log(await res.json());
+  await setup();
 } catch (e) {
   console.error("[ERROR]", e);
   Deno.exit(1);
