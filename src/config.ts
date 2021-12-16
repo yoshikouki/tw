@@ -10,7 +10,7 @@ export type ConfigObject = {
 
 class Config {
   dirPath = `${Deno.env.get("HOME")}/.config/tw`;
-  fileName = "settings.json";
+  fileName = "tw.json";
   path = `${this.dirPath}/${this.fileName}`;
   save(obj: ConfigObject) {
     try {
