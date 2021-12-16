@@ -5,13 +5,12 @@ export const fetchRequestToken = async (): Promise<string> => {
   const method = "POST";
   const requestTokenUrl = "https://api.twitter.com/oauth/request_token";
   const options = { "oauth_callback": "oob" };
-  const headers = createOAuthHeaders(method, requestTokenUrl, options);
 
   const response = await fetch(
     queryString.stringifyUrl({ url: requestTokenUrl, query: options }),
     {
       method,
-      headers,
+      headers: createOAuthHeaders(method, requestTokenUrl, options),
     },
   );
   const requestToken = queryString.parse(await response.text()).oauth_token;
@@ -37,16 +36,13 @@ export const obtainAccessToken = async (
     "oauth_verifier": pin,
     "oauth_token": requestToken,
   };
-  const headers = createOAuthHeaders(method, accessTokenUrl, options);
-  console.log(headers);
   const response = await fetch(
     queryString.stringifyUrl({ url: accessTokenUrl, query: options }),
     {
       method,
-      headers,
+      headers: createOAuthHeaders(method, accessTokenUrl, options),
     },
   );
-  console.log(response);
   if (!response.ok) {
     console.error("[ERROR] failed to obtain access token.");
     Deno.exit(1);
