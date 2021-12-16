@@ -1,4 +1,5 @@
 import { blue, bold } from "https://deno.land/std@0.117.0/fmt/colors.ts";
+import { saveConfig } from "./config.ts";
 import {
   fetchRequestToken,
   getAuthenticateUrl,
@@ -20,7 +21,8 @@ export const setup = async () => {
     console.error("[ERROR] PIN is required.");
     Deno.exit(1);
   }
-  await obtainAccessToken(input, requestToken);
+  const accessTokenObject = await obtainAccessToken(input, requestToken);
+  saveConfig(accessTokenObject);
 
   pp(`${bold("Congratulations!")} tw is ready!!1`);
   pp(blue(`

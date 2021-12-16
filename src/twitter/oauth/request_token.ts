@@ -1,5 +1,6 @@
 import { createOAuthHeaders } from "./oauth_headers.ts";
 import * as queryString from "https://deno.land/x/querystring@v1.0.2/mod.js";
+import { ConfigObject } from "../../config.ts";
 
 export const fetchRequestToken = async (): Promise<string> => {
   const method = "POST";
@@ -29,7 +30,7 @@ export const getAuthenticateUrl = (
 export const obtainAccessToken = async (
   pin: string,
   requestToken: string,
-): Promise<queryString.ParsedQuery> => {
+): Promise<ConfigObject> => {
   const method = "POST";
   const accessTokenUrl = "https://api.twitter.com/oauth/access_token";
   const options = {
@@ -47,6 +48,20 @@ export const obtainAccessToken = async (
     console.error("[ERROR] failed to obtain access token.");
     Deno.exit(1);
   }
-  const responseText = await response.text();
-  return queryString.parse(responseText);
+  const accessTokenObject = queryString.parse(await response.text());
+  return {
+    "oauth_token": extractString(accessTokenObject.oauth_token),
+    "oauth_token_secret": extractString(accessTokenObject.oauth_token_secret),
+    "screen_name": extractString(accessTokenObject.screen_name),
+    "user_id": extractString(accessTokenObject.user_id),
+  };
+};
+const extractString = (val: string | string[] | null): string => {
+  if (val === null) return "";
+  switch (typeof val) {
+    case "string":
+      return val;
+    default:
+      return val.join(" ");
+  }
 };
