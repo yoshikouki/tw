@@ -32,3 +32,8 @@ export const percentEncode = (val: string): string => {
 
   return percentEncodedVal;
 };
+
+export const pp = (text: string) => {
+  const dedentText = text.replace(/^[ ]+/i, "");
+  console.log(dedentText);
+};
