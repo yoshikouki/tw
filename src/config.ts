@@ -1,7 +1,7 @@
 import * as queryString from "https://deno.land/x/querystring@v1.0.2/mod.js";
 import { ensureDir } from "https://deno.land/std@0.117.0/fs/mod.ts";
 
-export type ConfigObject = {
+export type ConfigJSON = {
   "oauth_token"?: string;
   "oauth_token_secret"?: string;
   "screen_name"?: string;
@@ -12,7 +12,7 @@ class Config {
   dirPath = `${Deno.env.get("HOME")}/.config/tw`;
   fileName = "tw.json";
   path = `${this.dirPath}/${this.fileName}`;
-  save(obj: ConfigObject) {
+  save(obj: ConfigJSON) {
     try {
       ensureDir(this.dirPath);
       console.log(obj);
@@ -24,7 +24,7 @@ class Config {
   }
 }
 
-export const saveConfig = (obj: ConfigObject) => {
+export const saveConfig = (obj: ConfigJSON) => {
   const config = new Config();
   config.save(obj);
 };

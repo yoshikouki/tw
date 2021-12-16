@@ -1,6 +1,6 @@
 import { createOAuthHeaders } from "./oauth_headers.ts";
 import * as queryString from "https://deno.land/x/querystring@v1.0.2/mod.js";
-import { ConfigObject } from "../../config.ts";
+import { ConfigJSON } from "../../config.ts";
 
 export const fetchRequestToken = async (): Promise<string> => {
   const method = "POST";
@@ -30,7 +30,7 @@ export const getAuthenticateUrl = (
 export const obtainAccessToken = async (
   pin: string,
   requestToken: string,
-): Promise<ConfigObject> => {
+): Promise<ConfigJSON> => {
   const method = "POST";
   const accessTokenUrl = "https://api.twitter.com/oauth/access_token";
   const options = {
