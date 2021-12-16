@@ -30,7 +30,7 @@ export const getAuthenticateUrl = (
 export const obtainAccessToken = async (
   pin: string,
   requestToken: string,
-): Promise<void> => {
+): Promise<queryString.ParsedQuery> => {
   const method = "POST";
   const accessTokenUrl = "https://api.twitter.com/oauth/access_token";
   const options = {
@@ -52,6 +52,5 @@ export const obtainAccessToken = async (
     Deno.exit(1);
   }
   const responseText = await response.text();
-  const accessTokenObject = queryString.parse(responseText);
-  console.log(accessTokenObject);
+  return queryString.parse(responseText);
 };
