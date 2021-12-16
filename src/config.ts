@@ -1,5 +1,9 @@
 import * as queryString from "https://deno.land/x/querystring@v1.0.2/mod.js";
-import { ensureDir } from "https://deno.land/std@0.117.0/fs/mod.ts";
+import {
+  ensureDir,
+  exists,
+  existsSync,
+} from "https://deno.land/std@0.117.0/fs/mod.ts";
 
 export type ConfigJSON = {
   "oauth_token"?: string;
@@ -12,6 +16,16 @@ class Config {
   dirPath = `${Deno.env.get("HOME")}/.config/tw`;
   fileName = "tw.json";
   path = `${this.dirPath}/${this.fileName}`;
+
+  async read(): Promise<ConfigJSON | false> {
+    try {
+      return JSON.parse(await Deno.readTextFile(this.path));
+    } catch (err) {
+      if (err instanceof Deno.errors.NotFound) return false;
+      throw err;
+    }
+  }
+
   save(obj: ConfigJSON) {
     try {
       ensureDir(this.dirPath);
@@ -23,6 +37,11 @@ class Config {
     }
   }
 }
+
+export const getConfig = async (): Promise<false | ConfigJSON> => {
+  const config = new Config();
+  return await config.read();
+};
 
 export const saveConfig = (obj: ConfigJSON) => {
   const config = new Config();
