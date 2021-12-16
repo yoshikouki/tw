@@ -1,9 +1,4 @@
-import * as queryString from "https://deno.land/x/querystring@v1.0.2/mod.js";
-import {
-  ensureDir,
-  exists,
-  existsSync,
-} from "https://deno.land/std@0.117.0/fs/mod.ts";
+import { ensureDir } from "https://deno.land/std@0.117.0/fs/mod.ts";
 
 export type ConfigJSON = {
   "oauth_token"?: string;
