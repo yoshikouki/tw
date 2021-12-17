@@ -14,7 +14,7 @@ const run = async () => {
     console.log(options, args);
 
     const config = await getConfig();
-    if (config === false || !config.oauth_token || !config.oauth_token_secret) {
+    if (!config.oauth_token || !config.oauth_token_secret) {
       return await setup();
     }
     console.log("Hey! ", config.screen_name);

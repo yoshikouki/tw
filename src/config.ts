@@ -1,6 +1,6 @@
 import { ensureDir } from "https://deno.land/std@0.117.0/fs/mod.ts";
 
-export type ConfigJSON = {
+export type ConfigJSONType = {
   "oauth_token"?: string;
   "oauth_token_secret"?: string;
   "screen_name"?: string;
@@ -12,16 +12,15 @@ class Config {
   fileName = "tw.json";
   path = `${this.dirPath}/${this.fileName}`;
 
-  async read(): Promise<ConfigJSON | false> {
+  async read(): Promise<ConfigJSONType> {
     try {
       return JSON.parse(await Deno.readTextFile(this.path));
     } catch (err) {
-      if (err instanceof Deno.errors.NotFound) return false;
       throw err;
     }
   }
 
-  save(obj: ConfigJSON) {
+  save(obj: ConfigJSONType) {
     try {
       ensureDir(this.dirPath);
       Deno.writeTextFileSync(this.path, JSON.stringify(obj));
@@ -32,12 +31,12 @@ class Config {
   }
 }
 
-export const getConfig = async (): Promise<false | ConfigJSON> => {
+export const getConfig = async (): Promise<ConfigJSONType> => {
   const config = new Config();
   return await config.read();
 };
 
-export const saveConfig = (obj: ConfigJSON) => {
+export const saveConfig = (obj: ConfigJSONType) => {
   const config = new Config();
   config.save(obj);
 };
