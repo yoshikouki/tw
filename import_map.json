@@ -2,5 +2,11 @@
   "imports": {
     "./": "./",
     "/": "./",
+    "cliffy": "https://deno.land/x/cliffy/mod.ts",
+    "dotenv": "https://deno.land/x/dotenv/mod.ts",
+    "fmt/": "https://deno.land/std/fmt/",
+    "fs/": "https://deno.land/std/fs/",
+    "hmac": "https://deno.land/x/hmac/mod.ts",
+    "querystring": "https://deno.land/x/querystring/mod.js"
   }
 }
