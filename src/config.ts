@@ -1,4 +1,4 @@
-import { ensureDir } from "fs/mod.ts";
+import { ensureDirSync } from "fs/mod.ts";
 
 export type ConfigJSONType = {
   "oauth_token"?: string;
@@ -22,7 +22,7 @@ class Config {
 
   save(obj: ConfigJSONType) {
     try {
-      ensureDir(this.dirPath);
+      ensureDirSync(this.dirPath);
       Deno.writeTextFileSync(this.path, JSON.stringify(obj));
     } catch (err) {
       console.error("[ERROR]", err);
