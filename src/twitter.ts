@@ -11,7 +11,7 @@ export const authorizeTw = async () => {
   const authenticateUrl = await getAuthenticateUrl(requestToken);
   console.log(
     "First, access this URL to authorize to access your account.\n",
-    `${green(bold(authenticateUrl))}`,
+    `${green(bold(authenticateUrl))}\n`,
   );
   console.log("Next, enter the PIN.");
 
