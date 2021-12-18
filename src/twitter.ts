@@ -7,7 +7,7 @@ import {
 import { pp } from "/src/util.ts";
 import { blue, bold } from "fmt/colors.ts";
 
-export const setup = async () => {
+export const authorizeTw = async () => {
   const requestToken = await fetchRequestToken();
   const authenticateUrl = await getAuthenticateUrl(requestToken);
   pp(`

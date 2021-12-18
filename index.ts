@@ -1,4 +1,4 @@
-import { setup } from "/src/twitter.ts";
+import { authorizeTw } from "/src/twitter.ts";
 import { getConfig } from "/src/config.ts";
 import { cli } from "/src/cli.ts";
 
@@ -9,7 +9,7 @@ const main = async () => {
 
     const config = await getConfig();
     if (!config.oauth_token || !config.oauth_token_secret) {
-      return await setup();
+      return await authorizeTw();
     }
     console.log("Hey! ", config.screen_name);
   } catch (e) {
