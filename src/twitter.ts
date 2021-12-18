@@ -13,7 +13,7 @@ export const setup = async () => {
   pp(`
     First, access this URL to authorize to access your account.
     ${bold(authenticateUrl)}
-  `);
+`);
   pp("Next, enter the PIN.");
 
   const input = prompt(bold("PIN: ")); // 文字列の入力を求める
