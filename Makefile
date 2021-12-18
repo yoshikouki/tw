@@ -7,8 +7,8 @@ deno:
 	@which deno > /dev/null || echo "please install deno. https://deno.land/" | exit 1
 
 command:
-	@deno install --name tw \
-	--force --allow-net --allow-read --allow-write --allow-env \
+	@deno install --name tw --import-map=import_map.json --force --unstable \
+	--allow-net --allow-read --allow-write --allow-env \
 	index.ts
 
 path:
