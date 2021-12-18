@@ -1,16 +1,10 @@
-import { Command } from "cliffy";
 import { setup } from "/src/twitter.ts";
 import { getConfig } from "/src/config.ts";
+import { cli } from "/src/cli.ts";
 
-const run = async () => {
-  const cmd = new Command()
-    .name("tw")
-    .description("tweet quickly")
-    .option("-l, --timeline", "Show Timeline")
-    .arguments("[...text]");
-
+const main = async () => {
   try {
-    const { options, args } = await cmd.parse(Deno.args);
+    const { options, args } = await cli.parse(Deno.args);
     console.log(options, args);
 
     const config = await getConfig();
@@ -24,4 +18,4 @@ const run = async () => {
   }
 };
 
-await run();
+await main();
