@@ -1,6 +1,6 @@
-import { Command } from "https://deno.land/x/cliffy@v0.20.1/command/mod.ts";
-import { setup } from "./src/twitter.ts";
-import { getConfig } from "./src/config.ts";
+import { Command } from "cliffy";
+import { setup } from "/src/twitter.ts";
+import { getConfig } from "/src/config.ts";
 
 const run = async () => {
   const cmd = new Command()

@@ -1,11 +1,11 @@
-import { blue, bold } from "https://deno.land/std@0.117.0/fmt/colors.ts";
-import { saveConfig } from "./config.ts";
+import { saveConfig } from "/src/config.ts";
 import {
   fetchRequestToken,
   getAuthenticateUrl,
   obtainAccessToken,
-} from "./twitter/oauth/request_token.ts";
-import { pp } from "./util.ts";
+} from "/src/twitter/oauth/request_token.ts";
+import { pp } from "/src/util.ts";
+import { blue, bold } from "fmt/colors.ts";
 
 export const setup = async () => {
   const requestToken = await fetchRequestToken();

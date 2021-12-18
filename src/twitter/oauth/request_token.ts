@@ -1,4 +1,4 @@
-import { createOAuthHeaders } from "./oauth_headers.ts";
+import { createOAuthHeaders } from "/src/twitter/oauth/oauth_headers.ts";
 import * as queryString from "https://deno.land/x/querystring@v1.0.2/mod.js";
 import { ConfigJSON } from "../../config.ts";
 
