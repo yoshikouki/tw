@@ -12,10 +12,12 @@ class Config {
   fileName = "tw.json";
   path = `${this.dirPath}/${this.fileName}`;
 
-  async read(): Promise<ConfigJSONType> {
+  read(): ConfigJSONType | null {
     try {
-      return JSON.parse(await Deno.readTextFile(this.path));
+      const text = Deno.readTextFileSync(this.path);
+      return JSON.parse(text);
     } catch (err) {
+      if (err instanceof Deno.errors.NotFound) return null;
       throw err;
     }
   }
@@ -31,9 +33,9 @@ class Config {
   }
 }
 
-export const getConfig = async (): Promise<ConfigJSONType> => {
+export const getConfig = (): ConfigJSONType | null => {
   const config = new Config();
-  return await config.read();
+  return config.read();
 };
 
 export const saveConfig = (obj: ConfigJSONType) => {

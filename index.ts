@@ -7,8 +7,8 @@ const main = async () => {
     const { options, args } = await cli.parse(Deno.args);
     console.log(options, args);
 
-    const config = await getConfig();
-    if (!config.oauth_token || !config.oauth_token_secret) {
+    const config = getConfig();
+    if (config === null || !config.oauth_token || !config.oauth_token_secret) {
       return await authorizeTw();
     }
     console.log("Hey! ", config.screen_name);
