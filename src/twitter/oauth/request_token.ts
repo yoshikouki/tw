@@ -1,6 +1,6 @@
 import { createOAuthHeaders } from "/src/twitter/oauth/oauth_headers.ts";
-import * as queryString from "https://deno.land/x/querystring@v1.0.2/mod.js";
-import { ConfigJSONType } from "../../config.ts";
+import * as queryString from "querystring";
+import { ConfigJSONType } from "/src/config.ts";
 
 export const fetchRequestToken = async (): Promise<string> => {
   const method = "POST";

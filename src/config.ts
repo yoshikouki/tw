@@ -1,4 +1,4 @@
-import { ensureDir } from "https://deno.land/std@0.117.0/fs/mod.ts";
+import { ensureDir } from "fs/mod.ts";
 
 export type ConfigJSONType = {
   "oauth_token"?: string;
