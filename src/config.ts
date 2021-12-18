@@ -24,8 +24,7 @@ class Config {
   save(obj: ConfigJSON) {
     try {
       ensureDir(this.dirPath);
-      console.log(obj);
-      Deno.writeTextFile(this.path, JSON.stringify(obj));
+      Deno.writeTextFileSync(this.path, JSON.stringify(obj));
     } catch (err) {
       console.error("[ERROR]", err);
       Deno.exit(1);
