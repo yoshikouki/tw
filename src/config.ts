@@ -12,6 +12,10 @@ export class Config {
   fileName = "tw.json";
   path = `${this.dirPath}/${this.fileName}`;
 
+  constructor(path?: string) {
+    if (path) this.path = path;
+  }
+
   exists(): boolean {
     return !!this.read();
   }
