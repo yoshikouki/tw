@@ -1,8 +1,8 @@
 import { createOAuthHeaders } from "/src/twitter/oauth/oauth_headers.ts";
 import * as queryString from "querystring";
-import { ConfigJSONType } from "/src/config.ts";
+import { Config, ConfigJSONType } from "/src/config.ts";
 
-export const fetchRequestToken = async (): Promise<string> => {
+export const fetchRequestToken = async (config: Config): Promise<string> => {
   const method = "POST";
   const requestTokenUrl = "https://api.twitter.com/oauth/request_token";
   const options = { "oauth_callback": "oob" };
@@ -11,7 +11,7 @@ export const fetchRequestToken = async (): Promise<string> => {
     queryString.stringifyUrl({ url: requestTokenUrl, query: options }),
     {
       method,
-      headers: createOAuthHeaders(method, requestTokenUrl, options),
+      headers: createOAuthHeaders(method, requestTokenUrl, options, config),
     },
   );
   const requestToken = queryString.parse(await response.text()).oauth_token;
@@ -30,6 +30,7 @@ export const getAuthenticateUrl = (
 export const obtainAccessToken = async (
   pin: string,
   requestToken: string,
+  config: Config,
 ): Promise<ConfigJSONType> => {
   const method = "POST";
   const accessTokenUrl = "https://api.twitter.com/oauth/access_token";
@@ -41,7 +42,7 @@ export const obtainAccessToken = async (
     queryString.stringifyUrl({ url: accessTokenUrl, query: options }),
     {
       method,
-      headers: createOAuthHeaders(method, accessTokenUrl, options),
+      headers: createOAuthHeaders(method, accessTokenUrl, options, config),
     },
   );
   if (!response.ok) {
@@ -50,12 +51,13 @@ export const obtainAccessToken = async (
   }
   const accessTokenObject = queryString.parse(await response.text());
   return {
-    "oauth_token": extractString(accessTokenObject.oauth_token),
-    "oauth_token_secret": extractString(accessTokenObject.oauth_token_secret),
+    "access_token": extractString(accessTokenObject.oauth_token),
+    "access_token_secret": extractString(accessTokenObject.oauth_token_secret),
     "screen_name": extractString(accessTokenObject.screen_name),
     "user_id": extractString(accessTokenObject.user_id),
   };
 };
+
 const extractString = (val: string | string[] | null): string => {
   if (val === null) return "";
   switch (typeof val) {

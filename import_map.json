@@ -7,7 +7,9 @@
     "fmt/": "https://deno.land/std/fmt/",
     "fs/": "https://deno.land/std/fs/",
     "hmac": "https://deno.land/x/hmac/mod.ts",
+    "path/": "https://deno.land/std/path/",
     "querystring": "https://deno.land/x/querystring/mod.js",
+    "testing/": "https://deno.land/std/testing/",
     "uuid/": "https://deno.land/std/uuid/"
   }
 }

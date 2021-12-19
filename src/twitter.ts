@@ -1,4 +1,4 @@
-import { saveConfig } from "/src/config.ts";
+import { Config, saveConfig } from "/src/config.ts";
 import {
   fetchRequestToken,
   getAuthenticateUrl,
@@ -6,8 +6,8 @@ import {
 } from "/src/twitter/oauth/request_token.ts";
 import { blue, bold, green } from "fmt/colors.ts";
 
-export const authorizeTw = async () => {
-  const requestToken = await fetchRequestToken();
+export const authorizeTw = async (config: Config) => {
+  const requestToken = await fetchRequestToken(config);
   const authenticateUrl = await getAuthenticateUrl(requestToken);
   console.log(
     "First, access this URL to authorize to access your account.\n",
@@ -20,7 +20,11 @@ export const authorizeTw = async () => {
     console.error("[ERROR] PIN is required.");
     Deno.exit(1);
   }
-  const accessTokenObject = await obtainAccessToken(input, requestToken);
+  const accessTokenObject = await obtainAccessToken(
+    input,
+    requestToken,
+    config,
+  );
   saveConfig(accessTokenObject);
 
   console.log(`${bold("Congratulations!")} tw is ready!!1\n`);

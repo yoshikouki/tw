@@ -1,21 +1,54 @@
 import { ensureDirSync } from "fs/mod.ts";
+import { basename, dirname } from "path/mod.ts";
+import * as dotenv from "dotenv";
 
 export type ConfigJSONType = {
-  "oauth_token"?: string;
-  "oauth_token_secret"?: string;
+  "access_token"?: string;
+  "access_token_secret"?: string;
   "screen_name"?: string;
   "user_id"?: string;
 };
 
-class Config {
-  dirPath = `${Deno.env.get("HOME")}/.config/tw`;
-  fileName = "tw.json";
-  path = `${this.dirPath}/${this.fileName}`;
+interface ConfigOptions {
+  path?: string;
+}
+export class Config {
+  dirPath: string;
+  fileName: string;
+  path: string;
+  consumerKey?: string | null;
+  consumerSecret?: string | null;
+  accessToken?: string | null;
+  accessTokenSecret?: string | null;
+  screenName?: string | null;
+  userId?: string | null;
 
-  read(): ConfigJSONType | null {
+  constructor(
+    options?: ConfigOptions,
+  ) {
+    const configPath = (options && options.path)
+      ? options.path
+      : `${Deno.env.get("HOME")}/.config/tw/tw.json`;
+    this.dirPath = dirname(configPath);
+    this.fileName = basename(configPath);
+    this.path = `${this.dirPath}/${this.fileName}`;
+    this.read();
+    this.consumerKey = dotenv.config().consumerKey;
+    this.consumerSecret = dotenv.config().consumerSecret;
+  }
+
+  exists(): boolean {
+    return !!this.read();
+  }
+
+  read(): Config | null {
     try {
-      const text = Deno.readTextFileSync(this.path);
-      return JSON.parse(text);
+      const json: ConfigJSONType = JSON.parse(Deno.readTextFileSync(this.path));
+      this.accessToken = json.access_token || null;
+      this.accessTokenSecret = json.access_token_secret || null;
+      this.screenName = json.screen_name || null;
+      this.userId = json.user_id || null;
+      return this;
     } catch (err) {
       if (err instanceof Deno.errors.NotFound) return null;
       throw err;
@@ -32,11 +65,6 @@ class Config {
     }
   }
 }
-
-export const getConfig = (): ConfigJSONType | null => {
-  const config = new Config();
-  return config.read();
-};
 
 export const saveConfig = (obj: ConfigJSONType) => {
   const config = new Config();
