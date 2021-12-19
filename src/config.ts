@@ -1,4 +1,5 @@
 import { ensureDirSync } from "fs/mod.ts";
+import { basename, dirname } from "path/mod.ts";
 
 export type ConfigJSONType = {
   "oauth_token"?: string;
@@ -7,13 +8,23 @@ export type ConfigJSONType = {
   "user_id"?: string;
 };
 
+interface ConfigOptions {
+  path?: string;
+}
 export class Config {
-  dirPath = `${Deno.env.get("HOME")}/.config/tw`;
-  fileName = "tw.json";
-  path = `${this.dirPath}/${this.fileName}`;
+  dirPath: string;
+  fileName: string;
+  path: string;
 
-  constructor(path?: string) {
-    if (path) this.path = path;
+  constructor(
+    options?: ConfigOptions,
+  ) {
+    const configPath = (options && options.path)
+      ? options.path
+      : `${Deno.env.get("HOME")}/.config/tw/tw.json`;
+    this.dirPath = dirname(configPath);
+    this.fileName = basename(configPath);
+    this.path = `${this.dirPath}/${this.fileName}`;
   }
 
   exists(): boolean {

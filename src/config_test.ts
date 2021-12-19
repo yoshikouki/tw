@@ -11,7 +11,7 @@ Deno.test("existsIfConfigExist", () => {
   Deno.mkdirSync(baseDir, { recursive: true });
   Deno.writeTextFileSync(testFile, JSON.stringify({}));
 
-  const config = new Config(testFile);
+  const config = new Config({ path: testFile });
   assertEquals(config.exists(), true);
 
   Deno.removeSync(baseDir, { recursive: true });
@@ -20,6 +20,6 @@ Deno.test("existsIfConfigExist", () => {
 Deno.test("existsIfConfigNotExist", () => {
   const testFile = join(testdataDir, "exists_if_config_not_exist", "test.json");
 
-  const config = new Config(testFile);
+  const config = new Config({ path: testFile });
   assertEquals(config.exists(), false);
 });
