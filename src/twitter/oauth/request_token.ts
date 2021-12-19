@@ -50,12 +50,13 @@ export const obtainAccessToken = async (
   }
   const accessTokenObject = queryString.parse(await response.text());
   return {
-    "oauth_token": extractString(accessTokenObject.oauth_token),
-    "oauth_token_secret": extractString(accessTokenObject.oauth_token_secret),
+    "access_token": extractString(accessTokenObject.oauth_token),
+    "access_token_secret": extractString(accessTokenObject.oauth_token_secret),
     "screen_name": extractString(accessTokenObject.screen_name),
     "user_id": extractString(accessTokenObject.user_id),
   };
 };
+
 const extractString = (val: string | string[] | null): string => {
   if (val === null) return "";
   switch (typeof val) {

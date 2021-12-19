@@ -2,8 +2,8 @@ import { ensureDirSync } from "fs/mod.ts";
 import { basename, dirname } from "path/mod.ts";
 
 export type ConfigJSONType = {
-  "oauth_token"?: string;
-  "oauth_token_secret"?: string;
+  "access_token"?: string;
+  "access_token_secret"?: string;
   "screen_name"?: string;
   "user_id"?: string;
 };
@@ -39,8 +39,8 @@ export class Config {
   read(): Config | null {
     try {
       const json: ConfigJSONType = JSON.parse(Deno.readTextFileSync(this.path));
-      this.accessToken = json.oauth_token || null;
-      this.accessTokenSecret = json.oauth_token_secret || null;
+      this.accessToken = json.access_token || null;
+      this.accessTokenSecret = json.access_token_secret || null;
       this.screenName = json.screen_name || null;
       this.userId = json.user_id || null;
       return this;
