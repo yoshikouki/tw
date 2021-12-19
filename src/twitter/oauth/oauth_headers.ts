@@ -1,8 +1,8 @@
-import { config } from "dotenv";
 import { v4 } from "uuid/mod.ts";
 import { hmac } from "hmac";
 import * as queryString from "querystring";
 import { percentEncode } from "/src/util.ts";
+import { Config } from "/src/config.ts";
 
 type MethodType = "GET" | "POST";
 
@@ -15,23 +15,29 @@ class OAuthHeader {
   url: string;
   options: Options;
 
-  conf = config();
+  config: Config;
   oauthVersion = "1.0";
   oauthSignatureMethod = "HMAC-SHA1";
   oauthNonce = this.generateNonce();
   oauthTimestamp = this.getCurrentTimestamp();
 
-  constructor(method: MethodType, url: string, options: Options = {}) {
+  constructor(
+    method: MethodType,
+    url: string,
+    options: Options = {},
+    config: Config,
+  ) {
     this.method = method;
     this.url = url;
     this.options = options;
+    this.config = config;
   }
 
   create() {
     const oauthSignature = this.createSignature();
     const authorizationHeader = [
       "OAuth",
-      `oauth_consumer_key="${this.conf.consumerApiKey}",`,
+      `oauth_consumer_key="${this.config.consumerKey}",`,
       `oauth_nonce="${this.oauthNonce}",`,
       `oauth_signature="${oauthSignature}",`,
       `oauth_signature_method="${this.oauthSignatureMethod}",`,
@@ -58,7 +64,7 @@ class OAuthHeader {
     // oauth_token is unnecessary for PIN-Based OAuth
     const allParams: Options = {
       ...this.options,
-      "oauth_consumer_key": this.conf.consumerApiKey,
+      "oauth_consumer_key": this.config.consumerKey!,
       "oauth_nonce": this.oauthNonce,
       "oauth_signature_method": this.oauthSignatureMethod,
       "oauth_timestamp": this.oauthTimestamp,
@@ -71,7 +77,7 @@ class OAuthHeader {
       percentEncode(encodedParamPairs)
     }`;
 
-    const signingKey = `${percentEncode(this.conf.consumerApiSecret)}&`;
+    const signingKey = `${percentEncode(this.config.consumerSecret!)}&`;
 
     const signature = hmac(
       "sha1",
@@ -89,7 +95,8 @@ export const createOAuthHeaders = (
   method: MethodType,
   url: string,
   options: Options,
+  config: Config,
 ) => {
-  const headers = new OAuthHeader(method, url, options);
+  const headers = new OAuthHeader(method, url, options, config);
   return headers.create();
 };

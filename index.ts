@@ -8,8 +8,11 @@ const main = async () => {
     console.log(options, args);
 
     const config = new Config();
-    if (!config.exists || !config.accessToken || !config.accessTokenSecret) {
-      return await authorizeTw();
+    if (!(config.exists() && config.consumerKey && config.consumerSecret)) {
+      throw new Error("Config or consumer key pair is not available.");
+    }
+    if (!config.accessToken || !config.accessTokenSecret) {
+      return await authorizeTw(config);
     }
     console.log("Hey! ", config.screenName);
   } catch (e) {

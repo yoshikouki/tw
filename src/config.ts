@@ -1,5 +1,6 @@
 import { ensureDirSync } from "fs/mod.ts";
 import { basename, dirname } from "path/mod.ts";
+import * as dotenv from "dotenv";
 
 export type ConfigJSONType = {
   "access_token"?: string;
@@ -15,6 +16,8 @@ export class Config {
   dirPath: string;
   fileName: string;
   path: string;
+  consumerKey?: string | null;
+  consumerSecret?: string | null;
   accessToken?: string | null;
   accessTokenSecret?: string | null;
   screenName?: string | null;
@@ -30,6 +33,8 @@ export class Config {
     this.fileName = basename(configPath);
     this.path = `${this.dirPath}/${this.fileName}`;
     this.read();
+    this.consumerKey = dotenv.config().consumerKey;
+    this.consumerSecret = dotenv.config().consumerSecret;
   }
 
   exists(): boolean {
