@@ -7,10 +7,14 @@ export type ConfigJSONType = {
   "user_id"?: string;
 };
 
-class Config {
+export class Config {
   dirPath = `${Deno.env.get("HOME")}/.config/tw`;
   fileName = "tw.json";
   path = `${this.dirPath}/${this.fileName}`;
+
+  exists(): boolean {
+    return !!this.read();
+  }
 
   read(): ConfigJSONType | null {
     try {

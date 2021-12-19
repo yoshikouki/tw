@@ -1,5 +1,5 @@
 import { authorizeTw } from "/src/twitter.ts";
-import { getConfig } from "/src/config.ts";
+import { Config } from "/src/config.ts";
 import { cli } from "/src/cli.ts";
 
 const main = async () => {
@@ -7,8 +7,8 @@ const main = async () => {
     const { options, args } = await cli.parse(Deno.args);
     console.log(options, args);
 
-    const config = getConfig();
-    if (config === null || !config.oauth_token || !config.oauth_token_secret) {
+    const config = new Config();
+    if (!config.exists || !config.oauth_token || !config.oauth_token_secret) {
       return await authorizeTw();
     }
     console.log("Hey! ", config.screen_name);
