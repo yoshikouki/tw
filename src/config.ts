@@ -15,6 +15,10 @@ export class Config {
   dirPath: string;
   fileName: string;
   path: string;
+  accessToken?: string | null;
+  accessTokenSecret?: string | null;
+  screenName?: string | null;
+  userId?: string | null;
 
   constructor(
     options?: ConfigOptions,
@@ -25,16 +29,21 @@ export class Config {
     this.dirPath = dirname(configPath);
     this.fileName = basename(configPath);
     this.path = `${this.dirPath}/${this.fileName}`;
+    this.read();
   }
 
   exists(): boolean {
     return !!this.read();
   }
 
-  read(): ConfigJSONType | null {
+  read(): Config | null {
     try {
-      const text = Deno.readTextFileSync(this.path);
-      return JSON.parse(text);
+      const json: ConfigJSONType = JSON.parse(Deno.readTextFileSync(this.path));
+      this.accessToken = json.oauth_token || null;
+      this.accessTokenSecret = json.oauth_token_secret || null;
+      this.screenName = json.screen_name || null;
+      this.userId = json.user_id || null;
+      return this;
     } catch (err) {
       if (err instanceof Deno.errors.NotFound) return null;
       throw err;
@@ -51,11 +60,6 @@ export class Config {
     }
   }
 }
-
-export const getConfig = (): ConfigJSONType | null => {
-  const config = new Config();
-  return config.read();
-};
 
 export const saveConfig = (obj: ConfigJSONType) => {
   const config = new Config();

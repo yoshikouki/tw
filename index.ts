@@ -8,10 +8,10 @@ const main = async () => {
     console.log(options, args);
 
     const config = new Config();
-    if (!config.exists || !config.oauth_token || !config.oauth_token_secret) {
+    if (!config.exists || !config.accessToken || !config.accessTokenSecret) {
       return await authorizeTw();
     }
-    console.log("Hey! ", config.screen_name);
+    console.log("Hey! ", config.screenName);
   } catch (e) {
     console.error("[ERROR]", e);
     Deno.exit(1);
