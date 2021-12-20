@@ -1,4 +1,3 @@
-import { v4 } from "uuid/mod.ts";
 import { hmac } from "hmac";
 import * as queryString from "querystring";
 import { percentEncode } from "/src/util.ts";
@@ -52,7 +51,7 @@ class OAuthHeader {
   }
 
   private generateNonce(): string {
-    return v4.generate().replace(/-/g, "");
+    return crypto.randomUUID().replace(/-/g, "");
   }
 
   private getCurrentTimestamp(): string {
