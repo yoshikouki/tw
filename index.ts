@@ -11,7 +11,7 @@ const main = async () => {
     if (!(config.exists() && config.consumerKey && config.consumerSecret)) {
       config.initialize;
     }
-    if (!config.accessToken || !config.accessTokenSecret) {
+    if (!(config.accessToken && config.accessTokenSecret)) {
       return await authorizeTw(config);
     }
     console.log("Hey! ", config.screenName);
