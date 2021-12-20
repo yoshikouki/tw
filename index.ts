@@ -1,4 +1,4 @@
-import { authorizeTw } from "/src/twitter.ts";
+import { authorizeTw, tweet } from "/src/twitter.ts";
 import { Config } from "/src/config.ts";
 import { cli } from "/src/cli.ts";
 
@@ -14,7 +14,10 @@ const main = async () => {
     if (!(config.accessToken && config.accessTokenSecret)) {
       return await authorizeTw(config);
     }
-    console.log("Hey! ", config.screenName);
+    await tweet(
+      `test tweet from tw command!!1 ${Date.now().toLocaleString()}`,
+      config,
+    );
   } catch (e) {
     console.error("[ERROR]", e);
     Deno.exit(1);

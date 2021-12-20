@@ -5,6 +5,28 @@ import {
   obtainAccessToken,
 } from "/src/twitter/oauth.ts";
 import { blue, bold, green } from "fmt/colors.ts";
+import * as queryString from "querystring";
+import { createOAuthHeaders } from "/src/twitter/oauth/oauth_headers.ts";
+
+export const tweet = async (text: string, config: Config): Promise<void> => {
+  const method = "POST";
+  const tweetUrl = "https://api.twitter.com/2/tweets";
+  const options = {
+    "status": text,
+  };
+  const response = await fetch(
+    queryString.stringifyUrl({ url: tweetUrl }),
+    {
+      method,
+      headers: createOAuthHeaders(method, tweetUrl, {}, config),
+      body: JSON.stringify({ text: text }),
+    },
+  );
+  if (!response.ok) {
+    console.error("[ERROR] failed to tweet.", response);
+    Deno.exit(1);
+  }
+};
 
 export const authorizeTw = async (config: Config) => {
   const requestToken = await fetchRequestToken(config);

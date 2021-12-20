@@ -15,6 +15,7 @@ class OAuthHeader {
   options: Options;
 
   config: Config;
+  obtainedAccessToken: boolean;
   oauthVersion = "1.0";
   oauthSignatureMethod = "HMAC-SHA1";
   oauthNonce = this.generateNonce();
@@ -25,11 +26,13 @@ class OAuthHeader {
     url: string,
     options: Options = {},
     config: Config,
+    obtainedAccessToken: boolean,
   ) {
     this.method = method;
     this.url = url;
     this.options = options;
     this.config = config;
+    this.obtainedAccessToken = obtainedAccessToken;
   }
 
   create() {
@@ -42,11 +45,15 @@ class OAuthHeader {
       `oauth_signature_method="${this.oauthSignatureMethod}",`,
       `oauth_timestamp="${this.oauthTimestamp}",`,
       `oauth_version="${this.oauthVersion}"`,
-    ].join(" ");
+    ];
+    if (this.obtainedAccessToken) {
+      authorizationHeader.push(`oauth_token="${this.config.accessToken}"`);
+    }
 
     return new Headers({
-      "Authorization": authorizationHeader,
+      "Authorization": authorizationHeader.join(" "),
       "Content-Type": "application/json",
+      "Host": "http://localhost:3000",
     });
   }
 
@@ -69,15 +76,20 @@ class OAuthHeader {
       "oauth_timestamp": this.oauthTimestamp,
       "oauth_version": this.oauthVersion,
     };
+    if (this.obtainedAccessToken) {
+      Object.assign(allParams, { "oauth_token": this.config.accessToken });
+    }
 
     const encodedParamPairs = queryString.stringify(allParams);
 
     const signatureBaseString = `${this.method}&${percentEncode(this.url)}&${
       percentEncode(encodedParamPairs)
     }`;
-
-    const signingKey = `${percentEncode(this.config.consumerSecret!)}&`;
-
+    const signingKey = this.obtainedAccessToken
+      ? `${percentEncode(this.config.consumerSecret!)}&${
+        percentEncode(this.config.accessTokenSecret!)
+      }`
+      : `${percentEncode(this.config.consumerSecret!)}&`;
     const signature = hmac(
       "sha1",
       signingKey,
@@ -95,7 +107,14 @@ export const createOAuthHeaders = (
   url: string,
   options: Options,
   config: Config,
+  obtainedAccessToken = true,
 ) => {
-  const headers = new OAuthHeader(method, url, options, config);
+  const headers = new OAuthHeader(
+    method,
+    url,
+    options,
+    config,
+    obtainedAccessToken,
+  );
   return headers.create();
 };

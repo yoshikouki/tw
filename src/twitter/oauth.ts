@@ -11,7 +11,13 @@ export const fetchRequestToken = async (config: Config): Promise<string> => {
     queryString.stringifyUrl({ url: requestTokenUrl, query: options }),
     {
       method,
-      headers: createOAuthHeaders(method, requestTokenUrl, options, config),
+      headers: createOAuthHeaders(
+        method,
+        requestTokenUrl,
+        options,
+        config,
+        false,
+      ),
     },
   );
   const requestToken = queryString.parse(await response.text()).oauth_token;
@@ -42,7 +48,13 @@ export const obtainAccessToken = async (
     queryString.stringifyUrl({ url: accessTokenUrl, query: options }),
     {
       method,
-      headers: createOAuthHeaders(method, accessTokenUrl, options, config),
+      headers: createOAuthHeaders(
+        method,
+        accessTokenUrl,
+        options,
+        config,
+        false,
+      ),
     },
   );
   if (!response.ok) {
