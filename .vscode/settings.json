@@ -12,9 +12,9 @@
     "https://deno.land/": true
   },
   "[typescript]": {
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": true
   },
   "cSpell.words": [
     "testdata"
-  ],
+  ]
 }
