@@ -3,7 +3,7 @@ import {
   fetchRequestToken,
   getAuthenticateUrl,
   obtainAccessToken,
-} from "/src/twitter/oauth/request_token.ts";
+} from "/src/twitter/oauth.ts";
 import { blue, bold, green } from "fmt/colors.ts";
 
 export const authorizeTw = async (config: Config) => {
