@@ -9,9 +9,9 @@ const main = async () => {
 
     const config = new Config();
     if (!(config.exists() && config.consumerKey && config.consumerSecret)) {
-      throw new Error("Config or consumer key pair is not available.");
+      config.initialize;
     }
-    if (!config.accessToken || !config.accessTokenSecret) {
+    if (!(config.accessToken && config.accessTokenSecret)) {
       return await authorizeTw(config);
     }
     console.log("Hey! ", config.screenName);

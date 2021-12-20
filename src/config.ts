@@ -37,6 +37,10 @@ export class Config {
     this.consumerSecret = dotenv.config().consumerSecret;
   }
 
+  initialize(): void {
+    this.save({});
+  }
+
   exists(): boolean {
     return !!this.read();
   }
