@@ -13,8 +13,8 @@ export const authorizeTw = async (config: Config) => {
     "First, access this URL to authorize to access your account.\n",
     `${green(bold(authenticateUrl))}\n`,
   );
-  console.log("Next, enter the PIN.");
 
+  console.log("Next, enter the PIN.");
   const input = prompt(bold("PIN: ")); // 文字列の入力を求める
   if (input === null || input === undefined) {
     console.error("[ERROR] PIN is required.");
