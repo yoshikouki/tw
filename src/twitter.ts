@@ -12,14 +12,14 @@ export const tweet = async (text: string, config: Config): Promise<void> => {
   const method = "POST";
   const tweetUrl = "https://api.twitter.com/2/tweets";
   const options = {
-    "status": text,
+    "text": text,
   };
   const response = await fetch(
     queryString.stringifyUrl({ url: tweetUrl }),
     {
       method,
-      headers: createOAuthHeaders(method, tweetUrl, {}, config),
-      body: JSON.stringify({ text: text }),
+      headers: createOAuthHeaders(method, tweetUrl, options, config),
+      body: JSON.stringify(options),
     },
   );
   if (!response.ok) {

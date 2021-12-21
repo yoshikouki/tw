@@ -47,13 +47,12 @@ class OAuthHeader {
       `oauth_version="${this.oauthVersion}"`,
     ];
     if (this.obtainedAccessToken) {
-      authorizationHeader.push(`oauth_token="${this.config.accessToken}"`);
+      authorizationHeader.push(`, oauth_token="${this.config.accessToken}"`);
     }
 
     return new Headers({
-      "Authorization": authorizationHeader.join(" "),
+      "authorization": authorizationHeader.join(" "),
       "Content-Type": "application/json",
-      "Host": "http://localhost:3000",
     });
   }
 
