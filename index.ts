@@ -14,7 +14,7 @@ const main = async () => {
     if (!(config.accessToken && config.accessTokenSecret)) {
       return await authorizeTw(config);
     }
-    await timeline(config);
+    console.log(await timeline(config));
     // await tweet(
     //   `test tweet from tw command!!1 ${Date.now().toLocaleString()}`,
     //   config,

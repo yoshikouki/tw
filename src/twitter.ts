@@ -30,7 +30,7 @@ export const tweet = async (text: string, config: Config): Promise<void> => {
 
 export const timeline = async (config: Config): Promise<void> => {
   const method = "GET";
-  const timelineUrl = "https://api.twitter.com/2/tweets/1472942409801732099";
+  const timelineUrl = `https://api.twitter.com/2/users/${config.userId}/tweets`;
   const options = {};
   const response = await fetch(
     queryString.stringifyUrl({ url: timelineUrl }),
@@ -43,6 +43,7 @@ export const timeline = async (config: Config): Promise<void> => {
     console.error("[ERROR] failed to fetch timeline.", await response.json());
     Deno.exit(1);
   }
+  return await response.json();
 };
 
 export const authorizeTw = async (config: Config) => {
