@@ -8,10 +8,13 @@ import { blue, bold, green } from "fmt/colors.ts";
 import * as queryString from "querystring";
 import { createOAuthHeaders } from "/src/twitter/oauth/oauth_headers.ts";
 
-export const tweet = async (text: string, config: Config): Promise<void> => {
+export const tweet = async (
+  text: string,
+  config: Config,
+): Promise<Response> => {
   const method = "POST";
   const tweetUrl = "https://api.twitter.com/2/tweets";
-  const options = {
+  const body = {
     "text": text,
   };
   const request = new Request(
@@ -19,7 +22,7 @@ export const tweet = async (text: string, config: Config): Promise<void> => {
     {
       method,
       headers: createOAuthHeaders(method, tweetUrl, {}, config),
-      body: JSON.stringify(options),
+      body: JSON.stringify(body),
     },
   );
   const response = await fetch(request);
@@ -28,6 +31,7 @@ export const tweet = async (text: string, config: Config): Promise<void> => {
     console.error("[ERROR] Request: ", request);
     Deno.exit(1);
   }
+  return response;
 };
 
 export const timeline = async (config: Config): Promise<void> => {

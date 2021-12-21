@@ -15,10 +15,10 @@ const main = async () => {
       return await authorizeTw(config);
     }
     console.log(await timeline(config));
-    // await tweet(
-    //   `test tweet from tw command!!1 ${Date.now().toLocaleString()}`,
-    //   config,
-    // );
+    await tweet(
+      `test tweet from tw command!!1 ${Date.now().toLocaleString()}`,
+      config,
+    );
   } catch (e) {
     console.error("[ERROR]", e);
     Deno.exit(1);

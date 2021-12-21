@@ -49,7 +49,7 @@ class OAuthHeader {
 
     return new Headers({
       "Authorization": authorizationHeader.join(" "),
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",
       "Host": "api.twitter.com",
       "Accept": "*/*",
     });
