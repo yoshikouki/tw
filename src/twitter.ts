@@ -14,16 +14,18 @@ export const tweet = async (text: string, config: Config): Promise<void> => {
   const options = {
     "text": text,
   };
-  const response = await fetch(
+  const request = new Request(
     queryString.stringifyUrl({ url: tweetUrl }),
     {
       method,
-      headers: createOAuthHeaders(method, tweetUrl, options, config),
+      headers: createOAuthHeaders(method, tweetUrl, {}, config),
       body: JSON.stringify(options),
     },
   );
+  const response = await fetch(request);
   if (!response.ok) {
     console.error("[ERROR] failed to tweet.", response);
+    console.error("[ERROR] Request: ", request);
     Deno.exit(1);
   }
 };
@@ -32,15 +34,17 @@ export const timeline = async (config: Config): Promise<void> => {
   const method = "GET";
   const timelineUrl = `https://api.twitter.com/2/users/${config.userId}/tweets`;
   const options = {};
-  const response = await fetch(
+  const request = new Request(
     queryString.stringifyUrl({ url: timelineUrl }),
     {
       method,
       headers: createOAuthHeaders(method, timelineUrl, options, config),
     },
   );
+  const response = await fetch(request);
   if (!response.ok) {
     console.error("[ERROR] failed to fetch timeline.", await response.json());
+    console.error("[ERROR] Request: ", request);
     Deno.exit(1);
   }
   return await response.json();
