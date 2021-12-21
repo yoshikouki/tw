@@ -28,6 +28,23 @@ export const tweet = async (text: string, config: Config): Promise<void> => {
   }
 };
 
+export const timeline = async (config: Config): Promise<void> => {
+  const method = "GET";
+  const timelineUrl = "https://api.twitter.com/2/tweets/1472942409801732099";
+  const options = {};
+  const response = await fetch(
+    queryString.stringifyUrl({ url: timelineUrl }),
+    {
+      method,
+      headers: createOAuthHeaders(method, timelineUrl, options, config),
+    },
+  );
+  if (!response.ok) {
+    console.error("[ERROR] failed to fetch timeline.", await response.json());
+    Deno.exit(1);
+  }
+};
+
 export const authorizeTw = async (config: Config) => {
   const requestToken = await fetchRequestToken(config);
   const authenticateUrl = await getAuthenticateUrl(requestToken);
