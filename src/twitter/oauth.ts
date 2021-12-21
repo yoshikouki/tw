@@ -16,7 +16,6 @@ export const fetchRequestToken = async (config: Config): Promise<string> => {
         requestTokenUrl,
         options,
         config,
-        false,
       ),
     },
   );
@@ -53,7 +52,6 @@ export const obtainAccessToken = async (
         accessTokenUrl,
         options,
         config,
-        false,
       ),
     },
   );

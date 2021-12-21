@@ -15,7 +15,6 @@ class OAuthHeader {
   options: Options;
 
   config: Config;
-  obtainedAccessToken: boolean;
   oauthVersion = "1.0";
   oauthSignatureMethod = "HMAC-SHA1";
   oauthNonce = this.generateNonce();
@@ -26,13 +25,11 @@ class OAuthHeader {
     url: string,
     options: Options = {},
     config: Config,
-    obtainedAccessToken: boolean,
   ) {
     this.method = method;
     this.url = url;
     this.options = options;
     this.config = config;
-    this.obtainedAccessToken = obtainedAccessToken;
   }
 
   create() {
@@ -46,7 +43,7 @@ class OAuthHeader {
       `oauth_timestamp="${this.oauthTimestamp}",`,
       `oauth_version="${this.oauthVersion}"`,
     ];
-    if (this.obtainedAccessToken) {
+    if (this.config.accessToken) {
       authorizationHeader.push(`, oauth_token="${this.config.accessToken}"`);
     }
 
@@ -77,7 +74,7 @@ class OAuthHeader {
       "oauth_timestamp": this.oauthTimestamp,
       "oauth_version": this.oauthVersion,
     };
-    if (this.obtainedAccessToken) {
+    if (this.config.accessTokenSecret) {
       Object.assign(allParams, { "oauth_token": this.config.accessToken });
     }
 
@@ -86,9 +83,9 @@ class OAuthHeader {
     const signatureBaseString = `${this.method}&${percentEncode(this.url)}&${
       percentEncode(encodedParamPairs)
     }`;
-    const signingKey = this.obtainedAccessToken
+    const signingKey = this.config.accessTokenSecret
       ? `${percentEncode(this.config.consumerSecret!)}&${
-        percentEncode(this.config.accessTokenSecret!)
+        percentEncode(this.config.accessTokenSecret)
       }`
       : `${percentEncode(this.config.consumerSecret!)}&`;
     const signature = hmac(
@@ -108,14 +105,12 @@ export const createOAuthHeaders = (
   url: string,
   options: Options,
   config: Config,
-  obtainedAccessToken = true,
 ) => {
   const headers = new OAuthHeader(
     method,
     url,
     options,
     config,
-    obtainedAccessToken,
   );
   return headers.create();
 };
