@@ -9,7 +9,11 @@ import { postTweet } from "/src/twitter/tweet.ts";
 import { getTimeline } from "/src/twitter/timeline.ts";
 
 export const tweet = async (text: string, config: Config): Promise<void> => {
-  await postTweet(text, config);
+  const tweetResponse = await postTweet(text, config);
+  const json = await tweetResponse.json();
+  console.log(bold("tweeted!"));
+  console.log(gray(`id: ${json.data.id}`));
+  console.log(gray(`text: ${json.data.text}`));
 };
 
 export const timeline = async (config: Config): Promise<void> => {
@@ -17,18 +21,18 @@ export const timeline = async (config: Config): Promise<void> => {
   const timeline = [
     "Timeline",
     ...timelineResponse.map((tweet) => [
-      "\n",
+      "",
       gray(
         "--------------------------------------------------------------------------------",
       ),
-      "\n",
+      "",
       blue(`${tweet.user.name} ${"@" + tweet.user.screen_name}`),
       tweet.text,
       gray(`retweets: ${tweet.retweet_count}`),
       gray(`favorite: ${tweet.favorite_count}`),
     ]),
   ];
-  timeline.flat().forEach((text, id) => console.log(text));
+  timeline.flat().forEach((line) => console.log(line));
 };
 
 export const authorizeTw = async (config: Config) => {
