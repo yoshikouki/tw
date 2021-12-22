@@ -4,9 +4,9 @@ import {
   getAuthenticateUrl,
   obtainAccessToken,
 } from "/src/twitter/oauth.ts";
-import { blue, bold, green } from "fmt/colors.ts";
-import * as queryString from "querystring";
-import { createOAuthHeaders } from "/src/twitter/oauth/oauth_headers.ts";
+import { blue, bold, gray, green } from "fmt/colors.ts";
+import { postTweet } from "/src/twitter/tweet.ts";
+import { getTimeline } from "/src/twitter/timeline.ts";
 
 export const tweet = async (
   text: string,
@@ -35,23 +35,22 @@ export const tweet = async (
 };
 
 export const timeline = async (config: Config): Promise<void> => {
-  const method = "GET";
-  const timelineUrl = `https://api.twitter.com/2/users/${config.userId}/tweets`;
-  const options = {};
-  const request = new Request(
-    queryString.stringifyUrl({ url: timelineUrl }),
-    {
-      method,
-      headers: createOAuthHeaders(method, timelineUrl, options, config),
-    },
-  );
-  const response = await fetch(request);
-  if (!response.ok) {
-    console.error("[ERROR] failed to fetch timeline.", await response.json());
-    console.error("[ERROR] Request: ", request);
-    Deno.exit(1);
-  }
-  return await response.json();
+  const timelineResponse = await getTimeline(config);
+  const timeline = [
+    "Timeline",
+    ...timelineResponse.map((tweet) => [
+      "\n",
+      gray(
+        "--------------------------------------------------------------------------------",
+      ),
+      "\n",
+      blue(`${tweet.user.name} ${"@" + tweet.user.screen_name}`),
+      tweet.text,
+      gray(`retweets: ${tweet.retweet_count}`),
+      gray(`favorite: ${tweet.favorite_count}`),
+    ]),
+  ];
+  timeline.flat().forEach((text, id) => console.log(text));
 };
 
 export const authorizeTw = async (config: Config) => {
