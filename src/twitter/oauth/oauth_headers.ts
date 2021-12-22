@@ -42,11 +42,16 @@ class OAuthHeader {
       `oauth_signature_method="${this.oauthSignatureMethod}",`,
       `oauth_timestamp="${this.oauthTimestamp}",`,
       `oauth_version="${this.oauthVersion}"`,
-    ].join(" ");
+    ];
+    if (this.config.accessToken) {
+      authorizationHeader.push(`, oauth_token="${this.config.accessToken}"`);
+    }
 
     return new Headers({
-      "Authorization": authorizationHeader,
+      "Authorization": authorizationHeader.join(" "),
       "Content-Type": "application/json",
+      "Host": "api.twitter.com",
+      "Accept": "*/*",
     });
   }
 
@@ -69,15 +74,20 @@ class OAuthHeader {
       "oauth_timestamp": this.oauthTimestamp,
       "oauth_version": this.oauthVersion,
     };
+    if (this.config.accessTokenSecret) {
+      Object.assign(allParams, { "oauth_token": this.config.accessToken });
+    }
 
     const encodedParamPairs = queryString.stringify(allParams);
 
     const signatureBaseString = `${this.method}&${percentEncode(this.url)}&${
       percentEncode(encodedParamPairs)
     }`;
-
-    const signingKey = `${percentEncode(this.config.consumerSecret!)}&`;
-
+    const signingKey = this.config.accessTokenSecret
+      ? `${percentEncode(this.config.consumerSecret!)}&${
+        percentEncode(this.config.accessTokenSecret)
+      }`
+      : `${percentEncode(this.config.consumerSecret!)}&`;
     const signature = hmac(
       "sha1",
       signingKey,
@@ -96,6 +106,11 @@ export const createOAuthHeaders = (
   options: Options,
   config: Config,
 ) => {
-  const headers = new OAuthHeader(method, url, options, config);
+  const headers = new OAuthHeader(
+    method,
+    url,
+    options,
+    config,
+  );
   return headers.create();
 };
