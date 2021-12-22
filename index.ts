@@ -13,13 +13,10 @@ const main = async () => {
     if (!(config.accessToken && config.accessTokenSecret)) {
       return await authorizeTw(config);
     }
-    await tweet(
-      `test tweet from tw command!!1 ${Date.now().toLocaleString()}`,
-      config,
-    );
     if (options.timeline) {
       return await timeline(config);
     }
+    await tweet(args.join(" "), config);
   } catch (e) {
     console.error("[ERROR]", e);
     Deno.exit(1);
