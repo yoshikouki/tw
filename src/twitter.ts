@@ -18,21 +18,18 @@ export const tweet = async (text: string, config: Config): Promise<void> => {
 
 export const timeline = async (config: Config): Promise<void> => {
   const timelineResponse = await getTimeline(config);
-  const timeline = [
-    "Timeline",
-    ...timelineResponse.map((tweet) => [
-      "",
-      gray(
-        "--------------------------------------------------------------------------------",
-      ),
-      "",
-      blue(`${tweet.user.name} ${"@" + tweet.user.screen_name}`),
-      tweet.text,
-      gray(`retweets: ${tweet.retweet_count}`),
-      gray(`favorite: ${tweet.favorite_count}`),
-    ]),
-  ];
-  timeline.flat().forEach((line) => console.log(line));
+  const timeline = timelineResponse.map((tweet) => [
+    "",
+    gray(
+      "--------------------------------------------------------------------------------",
+    ),
+    "",
+    blue(`${tweet.user.name} ${"@" + tweet.user.screen_name}`),
+    tweet.text,
+    gray(`retweets: ${tweet.retweet_count}`),
+    gray(`favorite: ${tweet.favorite_count}`),
+  ]).flat();
+  timeline.forEach((line) => console.log(line));
 };
 
 export const authorizeTw = async (config: Config) => {
