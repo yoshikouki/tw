@@ -1,3 +1,10 @@
+export type TweetResponse = {
+  data: {
+    id: string;
+    text: string;
+  };
+};
+
 export type TimelineResponse = [
   {
     created_at: string;
@@ -27,7 +34,7 @@ export type TimelineResponse = [
       url: string;
       entities: {
         url: [Object];
-        description: [Object]
+        description: [Object];
       };
       protected: boolean;
       followers_count: number;

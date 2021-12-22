@@ -10,10 +10,9 @@ import { getTimeline } from "/src/twitter/timeline.ts";
 
 export const tweet = async (text: string, config: Config): Promise<void> => {
   const tweetResponse = await postTweet(text, config);
-  const json = await tweetResponse.json();
   console.log(bold("tweeted!"));
-  console.log(gray(`id: ${json.data.id}`));
-  console.log(gray(`text: ${json.data.text}`));
+  console.log(gray(`id: ${tweetResponse.data.id}`));
+  console.log(gray(`text: ${tweetResponse.data.text}`));
 };
 
 export const timeline = async (config: Config): Promise<void> => {

@@ -1,8 +1,12 @@
 import * as queryString from "querystring";
 import { Config } from "/src/config.ts";
 import { createOAuthHeaders } from "/src/twitter/oauth/oauth_headers.ts";
+import { TweetResponse } from "/src/twitter/types.d.ts";
 
-export const postTweet = async (text: string, config: Config) => {
+export const postTweet = async (
+  text: string,
+  config: Config,
+): Promise<TweetResponse> => {
   const method = "POST";
   const tweetUrl = "https://api.twitter.com/2/tweets";
   const body = {
@@ -22,5 +26,5 @@ export const postTweet = async (text: string, config: Config) => {
     console.error("[ERROR] Request: ", request);
     Deno.exit(1);
   }
-  return response;
+  return await response.json();
 };
