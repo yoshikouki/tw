@@ -14,7 +14,7 @@ command:
 
 path:
 	@echo "\nensure to set deno to PATH."
-	@echo '$$ export PATH=\"~/.deno/bin:$$PATH\" >> ~/.zshrc'
+	@echo '$$ export PATH="~/.deno/bin:$$PATH" >> ~/.zshrc'
 
 test:
 	deno test $(DENO_OPTIONS)
