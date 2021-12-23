@@ -1,7 +1,7 @@
 import * as queryString from "querystring";
-import { createOAuthHeaders } from "/src/twitter/oauth/oauth_headers.ts";
-import { Config } from "/src/config.ts";
-import { TimelineResponse } from "/src/twitter/types.d.ts";
+import { createOAuthHeaders } from "./oauth/oauth_headers.ts";
+import { Config } from "../config.ts";
+import { TimelineResponse } from "./types.d.ts";
 
 export const getTimeline = async (
   config: Config,

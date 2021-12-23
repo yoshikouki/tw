@@ -1,6 +1,6 @@
-import { createOAuthHeaders } from "/src/twitter/oauth/oauth_headers.ts";
+import { createOAuthHeaders } from "./oauth/oauth_headers.ts";
 import * as queryString from "querystring";
-import { Config, ConfigJSONType } from "/src/config.ts";
+import { Config, ConfigJSONType } from "../config.ts";
 
 export const fetchRequestToken = async (config: Config): Promise<string> => {
   const method = "POST";

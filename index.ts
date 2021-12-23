@@ -1,6 +1,6 @@
-import { authorizeTw, timeline, tweet } from "/src/twitter.ts";
-import { Config } from "/src/config.ts";
-import { cli } from "/src/cli.ts";
+import { authorizeTw, timeline, tweet } from "./src/twitter.ts";
+import { Config } from "./src/config.ts";
+import { cli } from "./src/cli.ts";
 
 const main = async () => {
   try {
