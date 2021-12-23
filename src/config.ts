@@ -94,11 +94,23 @@ export class Config {
   save(obj: ConfigJSONType) {
     try {
       ensureDirSync(this.dirPath);
-      Deno.writeTextFileSync(this.path, JSON.stringify(obj));
+      const configText = JSON.stringify({ ...this.json(), ...obj });
+      Deno.writeTextFileSync(this.path, configText);
     } catch (err) {
       console.error("[ERROR]", err);
       Deno.exit(1);
     }
+  }
+
+  json() {
+    return {
+      consumer_key: this.consumerKey,
+      consumer_secret: this.consumerSecret,
+      access_token: this.accessToken,
+      access_token_secret: this.accessTokenSecret,
+      screen_name: this.screenName,
+      user_id: this.userId,
+    };
   }
 }
 
