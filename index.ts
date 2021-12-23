@@ -8,7 +8,7 @@ const main = async () => {
 
     const config = new Config();
     if (!(config.exists() && config.consumerKey && config.consumerSecret)) {
-      config.initialize;
+      config.initialize();
     }
     if (!(config.accessToken && config.accessTokenSecret)) {
       return await authorizeTw(config);
