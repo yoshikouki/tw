@@ -8,7 +8,7 @@ const main = async () => {
 
     const config = new Config();
     if (!(config.exists() && config.consumerKey && config.consumerSecret)) {
-      config.initialize;
+      config.initialize();
     }
     if (!(config.accessToken && config.accessTokenSecret)) {
       return await authorizeTw(config);
@@ -16,7 +16,9 @@ const main = async () => {
     if (options.timeline) {
       return await timeline(config);
     }
-    await tweet(args[0].join(" "), config);
+    if (args[0]) {
+      await tweet(args[0].join(" "), config);
+    }
   } catch (e) {
     console.error("[ERROR]", e);
     Deno.exit(1);
