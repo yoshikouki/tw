@@ -1,7 +1,7 @@
 import { hmac } from "hmac";
 import * as queryString from "querystring";
-import { percentEncode } from "/src/util.ts";
-import { Config } from "/src/config.ts";
+import { percentEncode } from "../../util.ts";
+import { Config } from "../../config.ts";
 
 type MethodType = "GET" | "POST";
 

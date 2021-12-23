@@ -1,12 +1,12 @@
-import { Config, saveConfig } from "/src/config.ts";
+import { Config, saveConfig } from "./config.ts";
 import {
   fetchRequestToken,
   getAuthenticateUrl,
   obtainAccessToken,
-} from "/src/twitter/oauth.ts";
+} from "./twitter/oauth.ts";
 import { blue, bold, gray, green } from "fmt/colors.ts";
-import { postTweet } from "/src/twitter/tweet.ts";
-import { getTimeline } from "/src/twitter/timeline.ts";
+import { postTweet } from "./twitter/tweet.ts";
+import { getTimeline } from "./twitter/timeline.ts";
 
 export const tweet = async (text: string, config: Config): Promise<void> => {
   const tweetResponse = await postTweet(text, config);

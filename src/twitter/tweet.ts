@@ -1,7 +1,7 @@
 import * as queryString from "querystring";
-import { Config } from "/src/config.ts";
-import { createOAuthHeaders } from "/src/twitter/oauth/oauth_headers.ts";
-import { TweetResponse } from "/src/twitter/types.d.ts";
+import { Config } from "../config.ts";
+import { createOAuthHeaders } from "./oauth/oauth_headers.ts";
+import { TweetResponse } from "./types.d.ts";
 
 export const postTweet = async (
   text: string,
